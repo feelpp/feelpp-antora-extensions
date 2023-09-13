@@ -1,7 +1,7 @@
 {
   "name": "@feelpp/antora-extensions",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Antora Extensions by Feel++.",
   "main": "src/index.js",
   "repository": {

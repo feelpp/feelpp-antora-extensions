@@ -1,2 +1,3 @@
-# feelpp-antora-extensions
-Feel++ Antora Extensions
+# Antora Extensions by Feel++
+
+A set of Antora extensions.

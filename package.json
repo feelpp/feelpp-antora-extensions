@@ -1,0 +1,22 @@
+{
+  "name": "@feelpp/antora-extensions",
+  "private": false,
+  "version": "1.0.0",
+  "description": "Antora Extensions by Feel++.",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feelpp/feelpp-antora-extensions.git"
+  },
+  "keywords": [],
+  "author": "Guillaume Grossetie <ggrossetie@yuzutech.fr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/feelpp/feelpp-antora-extensions/issues"
+  },
+  "homepage": "https://github.com/feelpp/feelpp-antora-extensions#readme",
+  "devDependencies": {
+    "libnpmpublish": "^4.0.2",
+    "pacote": "^12.0.2"
+  }
+}

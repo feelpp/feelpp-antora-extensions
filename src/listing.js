@@ -20,6 +20,7 @@ function register ({ config: { listing, ...unknownOptions } }) {
   }
 
   this.on('uiLoaded', async ({playbook, uiCatalog}) => {
+    playbook.env.SITE_LISTING_EXTENSION_ENABLED = 'true'
     const uiOutputDir = playbook.ui.outputDir
     assetFile(uiCatalog, logger, uiOutputDir, 'css', 'listing.css')
     const helperPath = 'helpers/listing-get-sections.js'
@@ -39,6 +40,11 @@ function register ({ config: { listing, ...unknownOptions } }) {
     await partialFile(uiCatalog, 'partials/listing.hbs')
     await partialFile(uiCatalog, 'partials/listing-card.hbs')
   })
+
+  this.on('beforePublish', ({ playbook }) => {
+    delete playbook.env.SITE_LISTING_EXTENSION_ENABLED
+  })
+
 
   async function partialFile(uiCatalog, partialPath) {
     if (uiCatalog.findByType('partial').some(({ path }) => path === partialPath)) {

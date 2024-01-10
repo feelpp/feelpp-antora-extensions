@@ -16,9 +16,9 @@ function getToolboxPageModules(contentCatalog, version, tag) {
   }, {})
 }
 
-module.exports.register = (context) => {
-  const logger = context.getLogger('toolbox-navigation')
-  context.on('navigationBuilt', ({contentCatalog, navigationCatalog}) => {
+function register() {
+  const logger = this.getLogger('toolbox-navigation')
+  this.on('navigationBuilt', ({contentCatalog, navigationCatalog}) => {
     const toolboxComponent = contentCatalog.getComponent('toolboxes')
     if (toolboxComponent) {
       const componentVersions = toolboxComponent.versions
@@ -91,3 +91,5 @@ module.exports.register = (context) => {
     }
   })
 }
+
+module.exports.register = register

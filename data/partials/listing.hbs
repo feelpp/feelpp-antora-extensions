@@ -1,0 +1,16 @@
+<div class="listing">
+  {{#with (listing-get-sections configName @root.page)}}
+    {{#if this.length}}
+      {{#each this}}
+        {{#if this.pages.length}}
+          <h2>{{{this.title}}}</h2>
+          <div class="listing-container">
+            {{#each this.pages}}
+              <div class="listing-card-container">{{> listing-card this}}</div>
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/each}}
+    {{/if}}
+  {{/with}}
+</div>

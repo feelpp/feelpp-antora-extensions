@@ -1,0 +1,16 @@
+antora:
+  extensions:
+    - require: './../../../src/index.js'
+site:
+  title: Antora Listing Extension Documentation
+  url: https://antora-listing-extensio.org
+  start_page: antora-listing-extension::index.adoc
+content:
+  sources:
+    - url: ./../../..
+      branches: HEAD
+      start_path: tests/fixtures/docs-site
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true

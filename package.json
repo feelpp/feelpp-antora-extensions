@@ -16,7 +16,12 @@
   },
   "homepage": "https://github.com/feelpp/feelpp-antora-extensions#readme",
   "devDependencies": {
-    "libnpmpublish": "^4.0.2",
-    "pacote": "^12.0.2"
+    "@antora/site-generator": "~3.0",
+    "chai": "~4.4",
+    "chai-fs": "~2.0",
+    "dirty-chai": "~2.0",
+    "libnpmpublish": "~4.0",
+    "mocha": "~10.2",
+    "pacote": "~12.0"
   }
 }

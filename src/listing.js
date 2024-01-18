@@ -37,6 +37,7 @@ function register({config: {listing, ...unknownOptions}}) {
     }
     await helperFile(uiCatalog, 'helpers/image-spec.js')
     await helperFile(uiCatalog, 'helpers/resolve-resource-url.js')
+    await helperFile(uiCatalog, 'helpers/listing-get-data.js')
     await partialFile(uiCatalog, 'partials/listing.hbs')
     await partialFile(uiCatalog, 'partials/listing-card.hbs')
     await layoutFile(uiCatalog, 'layouts/listing.hbs')
@@ -50,48 +51,21 @@ function register({config: {listing, ...unknownOptions}}) {
     const navigation = {}
     for (const [configKey, config] of Object.entries(listing)) {
       for (const [sectionKey, section] of Object.entries(config)) {
-        if ('navigationParent' in section) {
-          const nav = navigation[section.navigationParent] || []
-          nav.push(`${configKey}.${sectionKey}`)
-          navigation[section.navigationParent] = nav
-        }
-      }
-    }
-
-    for (const [navigationParent, listingNavigations] of Object.entries(navigation)) {
-      for (const listingNavigation of listingNavigations) {
-        const [listingPageConfigName, listingSectionName] = listingNavigation.split('.')
-        const listingPages = contentCatalog.getPages((catalogPage) => {
-          const {asciidoc, out} = catalogPage
-          if (!out || !asciidoc) return
-          return asciidoc.attributes['page-listing-config'] === listingPageConfigName
-        })
-        for (const listingPage of listingPages) {
-          let nav = navigationCatalog.getNavigation(listingPage.src.component, listingPage.src.version)
-          if (!nav) {
-            nav = []
-            navigationCatalog.addNavigation(listingPage.src.component, listingPage.src.version, nav)
-          }
-          if (navigationParent === '<root>') {
-            const section = listing[listingPageConfigName][listingSectionName]
-            const content = section.navigationTitle || section.sectionTitle
-            const pages = getPages(contentCatalog, listingPage, section.selector)
-            const items = []
-            items.push({
-              content,
-              items: pages.map((page) => {
-                console.log({page})
-                console.log({src: page.src})
-                console.log({asciidoc: page.asciidoc})
-                return {
-                  content: page.title,
-                  url: page.pub.url,
-                  urlType: 'internal'
-                }
-              })
-            })
+        if ('navigation' in section && 'root' in section.navigation && section.navigation.root === true) {
+          const listingPages = contentCatalog.getPages((catalogPage) => {
+            const {asciidoc, out} = catalogPage
+            if (!out || !asciidoc) return
+            return asciidoc.attributes['page-listing-config'] === configKey
+          })
+          for (const listingPage of listingPages) {
+            let nav = navigationCatalog.getNavigation(listingPage.src.component, listingPage.src.version)
+            if (!nav) {
+              nav = []
+              navigationCatalog.addNavigation(listingPage.src.component, listingPage.src.version, nav)
+            }
+            const sectionConfig = listing[configKey][sectionKey]
             nav.push({
-              items: items
+              items: createNavigationItems(sectionConfig, listingPage, contentCatalog, listing)
             })
           }
         }
@@ -172,6 +146,39 @@ function register({config: {listing, ...unknownOptions}}) {
   }
 }
 
+const createNavigationItems = function (sectionConfig, parentPage, contentCatalog, listing) {
+  let navigationTitle = sectionConfig.sectionTitle
+  if ('navigation' in sectionConfig) {
+    if ('skip' in sectionConfig.navigation && sectionConfig.navigation.skip === true) {
+      return []
+    }
+    if ('title' in sectionConfig.navigation) {
+      navigationTitle = sectionConfig.navigation.title
+    }
+  }
+  const pages = getPages(contentCatalog, parentPage, sectionConfig.selector)
+  const navigationItems = pages.map((page) => {
+    const pageListingConfig = page.asciidoc.attributes['page-listing-config']
+    const items = pageListingConfig && pageListingConfig in listing
+      ? Object.entries(listing[pageListingConfig]).flatMap(([_, nestedSectionConfig]) => {
+        return createNavigationItems(nestedSectionConfig, page, contentCatalog, listing)
+      })
+      : undefined
+    return {
+      content: page.title,
+      url: page.pub.url,
+      urlType: 'internal',
+      items
+    }
+  })
+  if (navigationTitle === null) {
+    return navigationItems
+  }
+  return [{
+    content: navigationTitle,
+    items: navigationItems
+  }]
+}
 
 const getPages = function (contentCatalog, page, selector) {
   const filters = []
@@ -199,28 +206,28 @@ const getPages = function (contentCatalog, page, selector) {
       if ('contains' in attributeSelector) {
         const value = attributeSelector['contains']
         filters.push((_, catalogPage) => {
-          const { asciidoc } = catalogPage
+          const {asciidoc} = catalogPage
           const attributeValue = asciidoc.attributes[attributeSelectorName]
           return attributeValue && attributeValue.split(',').map((v) => v.trim()).includes(value)
         })
       } else if ('equals' in attributeSelector) {
         const value = attributeSelector['equals']
         filters.push((_, catalogPage) => {
-          const { asciidoc } = catalogPage
+          const {asciidoc} = catalogPage
           const attributeValue = asciidoc.attributes[attributeSelectorName]
           return attributeValue && attributeValue === value
         })
       } else if ('startsWith' in attributeSelector) {
         const value = attributeSelector['startsWith']
         filters.push((_, catalogPage) => {
-          const { asciidoc } = catalogPage
+          const {asciidoc} = catalogPage
           const attributeValue = asciidoc.attributes[attributeSelectorName]
           return attributeValue && attributeValue.startsWith(value)
         })
       } else if ('endsWith' in attributeSelector) {
         const value = attributeSelector['endsWith']
         filters.push((_, catalogPage) => {
-          const { asciidoc } = catalogPage
+          const {asciidoc} = catalogPage
           const attributeValue = asciidoc.attributes[attributeSelectorName]
           return attributeValue && attributeValue.endsWith(value)
         })
@@ -229,8 +236,8 @@ const getPages = function (contentCatalog, page, selector) {
       }
     }
   }
-  const pages = contentCatalog.getPages((catalogPage) => {
-    const { asciidoc, out } = catalogPage
+  return contentCatalog.getPages((catalogPage) => {
+    const {asciidoc, out} = catalogPage
     if (!out || !asciidoc) return
     if (filters && filters.length) {
       for (const filter of filters) {
@@ -242,14 +249,6 @@ const getPages = function (contentCatalog, page, selector) {
     }
     return true
   }).sort((a, b) => (a.title || '').localeCompare((b.title || '')))
-  if (pages && pages.length > 0) {
-    while (pages.length % 3 !== 0) {
-      pages.push({
-        empty: true,
-      })
-    }
-  }
-  return pages
 }
 
 

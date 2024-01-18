@@ -2,3 +2,5 @@
 :page-tags: report
 :page-applications: eupsea
 :page-supercomputers: discoverer
+:page-report-date: 20240117
+:page-report-scenario: A

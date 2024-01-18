@@ -1,3 +1,5 @@
 = Atmospire
 :page-tags: application
 :page-supercomputers: discoverer,karolina,meluxina
+:page-layout: listing
+:page-listing-config: atmospire

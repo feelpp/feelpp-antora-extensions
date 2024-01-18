@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   {{> head defaultPageTitle='Untitled'}}
+  {{#if env.SITE_LISTING_EXTENSION_ENABLED}}
+    <link rel="stylesheet" href="{{{uiRootPath}}}/css/listing.css">
+  {{/if}}
 </head>
 <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
 {{> header}}

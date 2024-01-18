@@ -96,5 +96,8 @@ const getPages = function (contentCatalog, page, selector) {
       })
     }
   }
+  pages.push({
+    empty: true,
+  })
   return pages
 }

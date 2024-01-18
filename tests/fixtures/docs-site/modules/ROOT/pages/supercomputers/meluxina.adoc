@@ -1,2 +1,4 @@
 = Meluxina
 :page-providers: cemosis,eurolab4hpc
+:page-layout: listing
+:page-listing-config: meluxina

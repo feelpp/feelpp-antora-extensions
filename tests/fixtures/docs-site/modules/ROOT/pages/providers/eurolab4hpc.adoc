@@ -1,2 +1,4 @@
 = Eurolab4HPC
 :page-tags: provider
+:page-layout: listing
+:page-listing-config: eurolab4hpc

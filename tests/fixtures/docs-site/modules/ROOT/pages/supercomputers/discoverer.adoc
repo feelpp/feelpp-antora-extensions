@@ -1,2 +1,4 @@
 = Discoverer
 :page-providers: cemosis
+:page-layout: listing
+:page-listing-config: discoverer

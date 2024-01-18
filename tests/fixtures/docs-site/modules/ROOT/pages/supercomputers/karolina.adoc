@@ -1,2 +1,4 @@
 = Karolina
 :page-providers: eurohpc
+:page-layout: listing
+:page-listing-config: karolina

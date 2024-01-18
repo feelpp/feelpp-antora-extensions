@@ -1,2 +1,4 @@
 = EuroHPC
 :page-tags: provider
+:page-layout: listing
+:page-listing-config: eurohpc

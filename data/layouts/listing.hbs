@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{> head defaultPageTitle='Untitled'}}
+</head>
+<body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+{{> header}}
+<div class="body">
+  {{> nav}}
+  <main class="article">
+    <div class="toolbar" role="navigation">
+      {{> nav-toggle}}
+      {{#with site.homeUrl}}
+        <a href="{{{relativize this}}}" class="home-link{{#if @root.page.home}} is-current{{/if}}"></a>
+      {{/with}}
+      {{> breadcrumbs}}
+      {{> page-versions}}
+    </div>
+    <div class="content">
+      {{#if (eq page.layout '404')}}
+        {{> article-404}}
+      {{else}}
+        {{> toc}}
+        <article class="doc">
+          {{#with page.title}}
+            <h1 class="page">{{{this}}}</h1>
+          {{/with}}
+          {{{page.contents}}}
+          {{> listing configName=@root.page.attributes.listing-config}}
+          {{> pagination}}
+        </article>
+      {{/if}}
+    </div>
+  </main>
+</div>
+{{> footer}}
+</body>
+</html>

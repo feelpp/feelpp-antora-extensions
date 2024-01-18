@@ -1,4 +1,5 @@
 = Eupsea
 :page-tags: application
 :page-supercomputers: karolina
-
+:page-layout: listing
+:page-listing-config: eupsea

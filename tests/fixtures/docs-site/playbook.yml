@@ -1,6 +1,100 @@
 antora:
   extensions:
     - require: './../../../src/index.js'
+      listing:
+        index:
+          providers:
+            navigation_parent: '<root>'
+            section_title: "Providers"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-tags'
+                  contains: 'provider'
+          applications:
+            navigation_parent: '<root>'
+            section_title: "Applications"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-tags'
+                  contains: 'application'
+        cemosis:
+          supercomputers:
+            section_title: "Supercomputers"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-providers'
+                  contains: 'cemosis'
+        eurohpc:
+          supercomputers:
+            section_title: "Supercomputers"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-providers'
+                  contains: 'eurohpc'
+        eurolab4hpc:
+          supercomputers:
+            section_title: "Supercomputers"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-providers'
+                  contains: 'eurolab4hpc'
+        meluxina:
+          applications:
+            section_title: "Applications"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-supercomputers'
+                  contains: 'meluxina'
+        karolina:
+          applications:
+            section_title: "Applications"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-supercomputers'
+                  contains: 'karolina'
+        discoverer:
+          applications:
+            section_title: "Applications"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-supercomputers'
+                  contains: 'discoverer'
+                - name: 'page-tags'
+                  contains: 'application'
+        eupsea:
+          reports:
+            section_title: "Reports"
+            selector:
+              component: '<current>'
+              module: '<current>'
+              version: '<current>'
+              attributes:
+                - name: 'page-applications'
+                  contains: 'eupsea'
 site:
   title: Antora Listing Extension Documentation
   url: https://antora-listing-extensio.org

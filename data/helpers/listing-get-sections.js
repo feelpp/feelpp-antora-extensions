@@ -7,12 +7,8 @@ module.exports = (configName, page, {data: {root}}) => {
   if (configName in listingConfig) {
     const config = listingConfig[configName]
     if (config) {
-      return config.map((section) => {
-        const selector = {
-          tag: section.tag,
-          withinParentModule: section.withinParentModule
-        }
-        const pages = getPages(contentCatalog, page, selector)
+      return Object.entries(config).map(([_, section]) => {
+        const pages = getPages(contentCatalog, page, section.selector)
         return {
           title: section.sectionTitle,
           pages,
@@ -23,14 +19,75 @@ module.exports = (configName, page, {data: {root}}) => {
   return []
 }
 
-const getPages = function (contentCatalog, page, {tag, withinParentModule}) {
-  const pages = contentCatalog.getPages(({asciidoc, out, src}) => {
+const getPages = function (contentCatalog, page, selector) {
+  const filters = []
+  if ('module' in selector && 'version' in selector && 'component' in selector) {
+    filters.push((currentPage, catalogPage) => {
+      const { src } = catalogPage
+      const componentMatches = selector.component === '<current>'
+        ? src.component === currentPage.componentVersion.name
+        : src.component === selector.component
+
+      const versionMatches = selector.version === '<current>'
+        ? src.version === currentPage.componentVersion.version
+        : src.version === selector.version
+
+      const moduleMatches = selector.module === '<current>'
+        ? src.module === currentPage.module
+        : src.module === selector.module
+
+      return componentMatches && versionMatches && moduleMatches
+    })
+  }
+  if ('attributes' in selector) {
+    const attributeSelectors = selector.attributes
+    for (const attributeSelector of attributeSelectors) {
+      const attributeSelectorName = attributeSelector.name
+      if ('contains' in attributeSelector) {
+        const value = attributeSelector['contains']
+        filters.push((_, catalogPage) => {
+          const { asciidoc } = catalogPage
+          const attributeValue = asciidoc.attributes[attributeSelectorName]
+          return attributeValue && attributeValue.split(',').map((v) => v.trim()).includes(value)
+        })
+      } else if ('equals' in attributeSelector) {
+        const value = attributeSelector['equals']
+        filters.push((_, catalogPage) => {
+          const { asciidoc } = catalogPage
+          const attributeValue = asciidoc.attributes[attributeSelectorName]
+          return attributeValue && attributeValue === value
+        })
+      } else if ('startsWith' in attributeSelector) {
+        const value = attributeSelector['startsWith']
+        filters.push((_, catalogPage) => {
+          const { asciidoc } = catalogPage
+          const attributeValue = asciidoc.attributes[attributeSelectorName]
+          return attributeValue && attributeValue.startsWith(value)
+        })
+      } else if ('endsWith' in attributeSelector) {
+        const value = attributeSelector['endsWith']
+        filters.push((_, catalogPage) => {
+          const { asciidoc } = catalogPage
+          const attributeValue = asciidoc.attributes[attributeSelectorName]
+          return attributeValue && attributeValue.endsWith(value)
+        })
+      } else {
+        throw new Error('Unsupported attribute selector, must be one of: contains, equals, startsWith or endsWith')
+      }
+    }
+  }
+  const pages = contentCatalog.getPages((catalogPage) => {
+    const { asciidoc, out } = catalogPage
     if (!out || !asciidoc) return
-    if (src.component !== page.componentVersion.name ||
-      (withinParentModule && src.module !== page.module) ||
-      src.version !== page.componentVersion.version) return
-    const pageTags = asciidoc.attributes['page-tags']
-    return pageTags && pageTags.split(',').map((v) => v.trim()).includes(tag)
+    if (filters && filters.length) {
+      for (const filter of filters) {
+        const match = filter(page, catalogPage)
+        if (!match) {
+          return
+        }
+      }
+    }
+    return true
   }).sort((a, b) => (a.title || '').localeCompare((b.title || '')))
   if (pages && pages.length > 0) {
     while (pages.length % 3 !== 0) {

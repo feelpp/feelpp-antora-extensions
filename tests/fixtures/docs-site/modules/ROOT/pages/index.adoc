@@ -1,1 +1,3 @@
 = Index
+:page-layout: listing
+:page-listing-config: index

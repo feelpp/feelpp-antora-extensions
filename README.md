@@ -4,6 +4,39 @@
 
 A set of Antora extensions.
 
+## Extensions
+
+### Lunr Search Index
+
+Automatically generates a Lunr.js compatible search index during the Antora build process.
+
+#### Usage
+
+Add the extension to your `site.yml`:
+
+```yaml
+antora:
+  extensions:
+  - '@feelpp/antora-extensions'
+
+config:
+  lunr:
+    indexFile: 'search-index.json'  # Output filename (optional)
+    maxContentLength: 1000          # Max content per document (optional)
+    minContentLength: 50            # Min content to include document (optional)
+    debug: false                    # Enable debug logging (optional)
+```
+
+The search index will be automatically generated at `build/site/search-index.json` after the site is built.
+
+#### Features
+
+- **Zero configuration**: Works out of the box with sensible defaults
+- **Smart content extraction**: Focuses on main content, excludes navigation and footers
+- **Configurable**: Customize content length limits and output location
+- **Performance optimized**: Efficient processing during site generation
+- **Error handling**: Graceful handling of malformed HTML or missing content
+
 ## Listing
 
 ### UI assumptions

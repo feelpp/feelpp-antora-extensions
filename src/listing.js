@@ -10,7 +10,7 @@ const template = require('./template')
 /**
  * @module listing-extension
  */
-function register ({ config: { listing, ...unknownOptions } }) {
+function register ({ config: { listing, jupyter: _jupyter, lunr: _lunr, ...unknownOptions } }) {
   const packageName = "@feelpp/antora-listing-extension"
   const logger = this.getLogger(packageName)
 

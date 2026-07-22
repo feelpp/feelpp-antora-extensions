@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "component": "executable-contract",
+  "version": "",
+  "module": "ROOT",
+  "source_relative_path": "foundations/sample.adoc",
+  "attachment_relative_path": "foundations/sample.ipynb",
+  "page_url": "/executable-contract/foundations/sample.html",
+  "attachment_url": "/executable-contract/_attachments/foundations/sample.ipynb",
+  "plain_page_generates_notebook": false,
+  "ui_contract": {
+    "requested_attribute": "jupyter",
+    "resolved_url_attribute": "jupyter-url",
+    "status_attribute": "jupyter-status"
+  }
+}

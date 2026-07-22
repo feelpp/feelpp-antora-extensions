@@ -1,0 +1,3 @@
+= Plain page
+
+This page deliberately does not request a notebook.

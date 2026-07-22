@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "duplicate-attachment",
+      "importance": "P0",
+      "expected": "reject two generated resources with the same Antora attachment ID"
+    },
+    {
+      "id": "converter-warning",
+      "importance": "P0",
+      "expected": "reject a required page when the converter reports an unsupported node"
+    },
+    {
+      "id": "missing-converter",
+      "importance": "P0",
+      "expected": "fail with the package name and requested page resource ID"
+    },
+    {
+      "id": "unresolved-url",
+      "importance": "P0",
+      "expected": "do not expose a notebook URL or generated status"
+    },
+    {
+      "id": "nondeterministic-manifest",
+      "importance": "P1",
+      "expected": "reject timestamps, unstable ordering, or missing source/output digests"
+    }
+  ]
+}

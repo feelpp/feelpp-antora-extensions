@@ -1,0 +1,5 @@
+name: executable-contract
+title: Executable contract fixture
+version: ~
+nav:
+  - modules/ROOT/nav.adoc

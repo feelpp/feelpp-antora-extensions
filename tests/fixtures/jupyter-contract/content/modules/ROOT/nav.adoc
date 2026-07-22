@@ -1,0 +1,2 @@
+* xref:foundations/sample.adoc[Generated notebook sample]
+* xref:plain.adoc[Plain page]

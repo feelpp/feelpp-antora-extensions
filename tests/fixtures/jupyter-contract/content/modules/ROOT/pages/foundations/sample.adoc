@@ -1,0 +1,28 @@
+= Generated notebook sample
+:page-jupyter:
+:page-course-language: en
+:page-course-concepts: DP-FND-01, DP-REP-01
+:page-course-priority: P0
+:page-course-difficulty: D1
+:page-course-duration-minutes: 20
+:page-course-outcomes: LO1, LO9
+:page-course-execution-profile: fast
+:jupyter-language-name: python
+:jupyter-language-version: 3.12
+:jupyter-kernel-name: python3
+:jupyter-kernel-language: python
+
+The page is the canonical explanation. Its generated notebook preserves this prose and the executable evidence below.
+
+[stem]
+++++
+\widehat\mu = \frac{1}{n}\sum_{i=1}^{n}X_i.
+++++
+
+[source,python]
+----
+value = 6 * 7
+print(value)
+----
+
+xref:attachment$foundations/sample.ipynb[Download the generated notebook].

@@ -1,7 +1,7 @@
 {
   "name": "@feelpp/antora-extensions",
   "private": false,
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.5",
   "description": "Antora Extensions by Feel++.",
   "main": "src/index.js",
   "repository": {
@@ -20,11 +20,13 @@
   "homepage": "https://github.com/feelpp/feelpp-antora-extensions#readme",
   "devDependencies": {
     "chai": "^4.3.7",
-    "mocha": "^10.2.0",
     "libnpmpublish": "^4.0.2",
+    "mocha": "^10.2.0",
     "pacote": "^12.0.2"
   },
   "dependencies": {
+    "@asciidoctor/core": "2.2.9",
+    "asciidoctor-jupyter": "0.7.0",
     "jsdom": "^20.0.3"
   }
 }

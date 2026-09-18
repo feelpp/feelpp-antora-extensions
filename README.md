@@ -35,6 +35,40 @@ The index is written to the configured Antora output directory after the site is
 - **Performance optimized**: Efficient processing during site generation
 - **Error handling**: Graceful handling of malformed HTML or missing content
 
+## Releases
+
+Releases are published from GitHub Actions using npm trusted publishing (OIDC); no npm access token is stored in the repository.
+
+Before the first release, configure a trusted publisher for `@feelpp/antora-extensions` on npm with:
+
+- Organization or user: `feelpp`
+- Repository: `feelpp-antora-extensions`
+- Workflow filename: `release.yml`
+- Environment name: `npm`
+- Allowed action: `npm publish`
+
+The GitHub Actions workflow requires the `npm` environment and installs npm 11.5.1 because it supports OIDC trusted publishing. It publishes prereleases under the npm `next` dist-tag and stable versions under `latest`; it creates a matching GitHub prerelease when the version is a prerelease.
+
+To publish a prerelease:
+
+```bash
+npm version prerelease --preid=rc
+git push origin main --follow-tags
+```
+
+To publish a stable release, set the final version, create a `v<version>` tag, and push it.
+
+```bash
+npm version 1.0.0
+git push origin main --follow-tags
+```
+
+Confirm the publication with:
+
+```bash
+npm view @feelpp/antora-extensions dist-tags
+```
+
 ## Listing
 
 ### UI assumptions

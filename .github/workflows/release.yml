@@ -38,7 +38,7 @@ jobs:
       - name: Update npm
         run: npm install --global npm@11.5.1
       - name: Publish package to npm
-        run: npm publish --provenance --access public --tag next
+        run: npm publish --provenance --access public --tag ${{ contains(github.ref_name, '-') && 'next' || 'latest' }}
       # create the GitHub release
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

@@ -22,7 +22,7 @@ antora:
       indexFile: search-index.json  # Output filename (optional)
       maxContentLength: 1000        # Max content per document (optional)
       minContentLength: 50          # Min content to include document (optional)
-    debug: false                    # Enable debug logging (optional)
+      debug: false                  # Enable debug logging (optional)
 ```
 
 The index is written to the configured Antora output directory after the site is built. Result URLs preserve the pathname in `site.url`, so a site deployed at `https://example.org/project/` receives results below `/project/`.

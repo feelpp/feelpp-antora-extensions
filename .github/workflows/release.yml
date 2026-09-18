@@ -38,7 +38,7 @@ jobs:
       - name: Update npm
         run: npm install --global npm@11.5.1
       - name: Publish package to npm
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag next
       # create the GitHub release
       - name: Create GitHub release
         id: create_release

@@ -9,7 +9,7 @@
     "url": "git+https://github.com/feelpp/feelpp-antora-extensions.git"
   },
   "keywords": [],
-  "author": "Guillaume Grossetie <ggrossetie@yuzutech.fr>",
+    "version": "1.0.0-rc.8",
   "license": "MIT",
   "scripts": {
     "test": "mocha tests/*-test.js"

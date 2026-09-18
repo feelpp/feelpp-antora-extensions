@@ -8,6 +8,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const { URL } = require('url')
 
 // Lazy load JSDOM only when needed
 let JSDOM
@@ -33,7 +34,7 @@ function register({ config, playbook }) {
       const outputDir = playbook.output?.dir || 'build/site'
       logger.info(`Output directory: ${outputDir}`)
       
-      generateSearchIndex(outputDir, config.lunr || {}, logger)
+      generateSearchIndex(outputDir, { ...config.lunr, siteUrl: playbook.site.url }, logger)
     } catch (error) {
       logger.error('Failed to generate search index:', error)
       throw error
@@ -45,6 +46,7 @@ function generateSearchIndex(outputDir, config = {}, logger) {
   const searchIndexFile = path.join(outputDir, config.indexFile || 'search-index.json')
   const maxContentLength = config.maxContentLength || 1000
   const minContentLength = config.minContentLength || 50
+  const sitePath = getSitePath(config.siteUrl)
   
   // Find all HTML files
   const htmlFiles = walkDirectory(outputDir).filter(file => file.endsWith('.html'))
@@ -53,6 +55,7 @@ function generateSearchIndex(outputDir, config = {}, logger) {
   
   htmlFiles.forEach(filePath => {
     try {
+      if (path.basename(filePath) === '404.html') return
       const html = fs.readFileSync(filePath, 'utf8')
       const title = getTitle(html)
       const content = extractTextContent(html)
@@ -64,7 +67,7 @@ function generateSearchIndex(outputDir, config = {}, logger) {
       
       // Generate relative URL
       const relativePath = path.relative(outputDir, filePath)
-      const url = '/' + relativePath.replace(/\\/g, '/').replace(/\/index\.html$/, '/')
+      const url = sitePath + relativePath.replace(/\\/g, '/').replace(/\/index\.html$/, '/')
       
       documents.push({
         id: ++id,
@@ -88,6 +91,12 @@ function generateSearchIndex(outputDir, config = {}, logger) {
   // Write search index
   fs.writeFileSync(searchIndexFile, JSON.stringify(searchIndex, null, 2))
   logger.info(`Search index generated: ${documents.length} documents → ${searchIndexFile}`)
+}
+
+function getSitePath(siteUrl) {
+  if (!siteUrl) return '/'
+  const pathname = new URL(siteUrl).pathname
+  return pathname.endsWith('/') ? pathname : `${pathname}/`
 }
 
 function extractTextContent(html) {
@@ -142,4 +151,4 @@ function walkDirectory(dir, fileList = []) {
   return fileList
 }
 
-module.exports = { register }
+module.exports = { generateSearchIndex, getSitePath, register }

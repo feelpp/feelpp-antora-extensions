@@ -12,22 +12,20 @@ Automatically generates a Lunr.js compatible search index during the Antora buil
 
 #### Usage
 
-Add the extension to your `site.yml`:
+Add the Lunr extension to your `site.yml`:
 
 ```yaml
 antora:
   extensions:
-  - '@feelpp/antora-extensions'
-
-config:
-  lunr:
-    indexFile: 'search-index.json'  # Output filename (optional)
-    maxContentLength: 1000          # Max content per document (optional)
-    minContentLength: 50            # Min content to include document (optional)
+  - require: '@feelpp/antora-extensions/src/lunr.js'
+    lunr:
+      indexFile: search-index.json  # Output filename (optional)
+      maxContentLength: 1000        # Max content per document (optional)
+      minContentLength: 50          # Min content to include document (optional)
     debug: false                    # Enable debug logging (optional)
 ```
 
-The search index will be automatically generated at `build/site/search-index.json` after the site is built.
+The index is written to the configured Antora output directory after the site is built. Result URLs preserve the pathname in `site.url`, so a site deployed at `https://example.org/project/` receives results below `/project/`.
 
 #### Features
 

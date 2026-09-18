@@ -9,7 +9,7 @@
     "url": "git+https://github.com/feelpp/feelpp-antora-extensions.git"
   },
   "keywords": [],
-    "version": "1.0.0-rc.8",
+    "version": "1.0.0-rc.9",
   "license": "MIT",
   "scripts": {
     "test": "mocha tests/*-test.js"
